@@ -1,48 +1,18 @@
 {% extends "_subbase.html" %}
+{% import "_errors.html" as errors %}
+
 
 {% block base_content %}
 
 <div class="row h-100 justify-content-center">
-  <div class="login-form">
+  <div class="login-form">  
     <div class="card">
       <div class="card-header">
           <div>{{ config.SITE_NAME }}: {% block formname %}{% endblock %}</div>
       </div>
 
       <div class="card-body">
-
-        <div class="errors">
-            {% with messages = get_flashed_messages(with_categories=true) %}
-              {% for category, message in messages %}
-      
-                {% set class="alert-info" %}
-                {% set fas_class="fa-comment" %}
-      
-                {% if category == "warning" %}
-                  {% set class="alert-warning" %}
-                  {% set fas_class="fa-exclamation" %}
-                {% elif category == "error" %}
-                  {% set class="alert-danger" %}
-                  {% set fas_class="fa-exclamation" %}
-                {% elif category == "success" %}
-                  {% set class="alert-success" %}
-                  {% set fas_class="fa-check" %}
-                {% endif %}
-      
-      
-                <div class="row">
-                    <div class="alert {{class}}" role="alert">
-                        <i class="fas {{fas_class}}"></i>
-                        <span class="sr-only">{{category}}:</span>
-                        {{message}}
-                    </div>
-                </div>
-              {% endfor %}
-            {% endwith %}
-      
-            {% block errors %}{% endblock %}
-        </div>  
-    
+        {{ errors.render() }}
 
         {% block content %}{% endblock %}
       </div>
