@@ -1,0 +1,154 @@
+{% macro render_field(field, label=None) %}
+  <div class="row">
+    <div class="form-group{% if field.errors %} has-error{%endif%} col-md-12">
+        {% if field.type == "HiddenField" or field.type == "CSRFTokenField" %}
+        {% elif field.type == "BooleanField" %}
+            {{ field.label(class="control-label", text=label) }}{{ render_checkbox_field_control(field, **kwargs) }}
+        {% elif field.type == "RadioField" %}
+            {{ field.label(class="control-label", text=label) }}{{ render_radio_field_control(field, **kwargs) }}
+        {% else %}
+            {{ field.label(class="control-label", text=label) }}{{ render_field_control(field, **kwargs) }}
+        {% endif %}
+    </div>
+  </div>
+{% endmacro %}
+
+
+{% macro render_checkbox_field_control(field) %}
+    {{ field(class="checkbox", **kwargs)|safe }}
+{% endmacro %}
+
+
+{% macro render_radio_field_control(field) %}
+    {{ field(class="radio", **kwargs)|safe }}
+{% endmacro %}
+
+
+{% macro render_field_control(field) %}
+    {{ field(class="form-control", **kwargs)|safe }}
+{% endmacro %}
+
+
+{% macro render_button_bar(cancelview, submit_label="Save", cancelviewparams={}, modal_cancel=False) %}
+      <div class="form-group text-right">
+          <div>
+              {% if cancelview %}
+                <a href="{{ url_for(cancelview, **cancelviewparams) }}" class="btn btn-default" role="button">Cancel</a>
+              {% endif %}
+              {% if modal_cancel %}
+                <a class="btn btn-default" data-dismiss="modal" aria-label="Close" role="button">Cancel</a>
+              {% endif %}
+              <button type="submit" class="btn btn-primary">{{ submit_label }}</button>
+          </div>
+      </div>
+{% endmacro %}
+
+{% macro render_form(form, submit_label) %}
+  {{ form.hidden_tag() }}
+
+  {% for field in form %}
+    {{ render_field(field) }}
+  {% endfor %}
+{% endmacro %}
+
+
+{% macro render_form_errors(form) %}
+    {% for field in form %}
+      {% if field.errors %}
+        <div class="alert alert-dismissible alert-danger">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <p>{{ field.label }} has the following errors:</p>
+            <ul>
+            {% for error in field.errors%}
+                <li>{{ error }}</li>
+            {% endfor %}
+            </ul>
+          </div>
+      {% endif %}
+    {% endfor %}
+
+{% endmacro %}
+
+
+{% macro render_search(searchForm, searchview, placeholder='enter search text', buttons={}, checkboxes={}) %}
+<form method="GET" class="form-horizontal" action="{{ url_for(searchview, **kwargs) }}">
+
+  <div class="input-group">
+    {{ searchForm.search(class="form-control", placeholder=placeholder) | safe }}
+    {% for field in searchForm %}
+      {% if field.type == "BooleanField" %}
+        <div class="input-group-append">
+          <div class="input-group-text">
+            {{ field(**kwargs)|safe }}
+            {{ field.label.text }}
+          </div>
+        </div>
+        {% endif %}
+    {% endfor %}
+
+    <div class="input-group-append">
+      {% for key, value in buttons.items() %}
+        <span class="input-group-text">
+          <a href="{{ url_for(value, **kwargs) }}">{{ key }}</a>
+        </span>
+      {% endfor %}
+      <span class="input-group-text">
+          <a href="{{ url_for(searchview, **kwargs) }}">Clear Search</a>
+      </span>
+    </div>
+    <div class="input-group-append">
+      <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+  </div>
+
+  {% if searchForm | rejectattr("type", "ne", "SelectField") | list | length is ge(1) %}
+    <div class="search-filters">
+      <div class="row">
+        {% for field in searchForm | rejectattr("type", "ne", "SelectField") %}
+          <div class="form-group{% if field.errors %} has-error{%endif%} col">
+            <div>{{ field.label.text | nbsp}}</div>
+            <div>{{ field(**kwargs)|safe }}</div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+
+</form>
+{% endmacro %}
+
+
+{% macro render_pagination(pagination, endpoint, form) %}
+  {% if pagination.pages > 1 %}
+
+  {% for f in form | rejectattr("name", "eq", "page") | rejectattr("name", "eq", "csrf_token") | selectattr("data") %}
+    {% if kwargs.update({f.name: f.data}) %} {% endif %}
+  {% endfor %}
+
+  <ul class="pagination">
+    {% if pagination.has_prev %}
+      <li class="page-item"><a class="page-link" href="{{ url_for(endpoint, page=pagination.prev_num, **kwargs) }}" rel="prev">Previous</a></li>
+    {% else %}
+      <li class="page-item disabled"><a class="page-link">Previous</a></li>
+    {% endif %}
+
+    {%- for page in pagination.iter_pages(left_edge=1, left_current=2, right_current=3, right_edge=1) %}
+      {% if page %}
+        {% if page != pagination.page %}
+          <li class="page-item"><a class="page-link" href="{{ url_for(endpoint, page=page, **kwargs) }}">{{ page }}</a></li>
+        {% else %}
+          <li class="page-item active"><a class="page-link">{{ page }}</a></li>
+        {% endif %}
+      {% else %}
+        <li class="page-item disabled"><a class="page-link">…</a></li>
+      {% endif %}
+    {%- endfor %}
+
+    {% if pagination.has_next %}
+      <li class="page-item"><a class="page-link" href="{{ url_for(endpoint, page=pagination.next_num, **kwargs) }}" rel="next">Next</a></li>
+    {% else %}
+      <li class="page-item disabled"><a class="page-link">Next</a></li>
+    {% endif %}
+    </ul>
+  {% endif %}
+{% endmacro %}

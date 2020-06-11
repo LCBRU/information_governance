@@ -1,0 +1,7 @@
+-r requirements.txt
+
+beautifulsoup4
+pytest
+Faker
+coverage
+pytest-cov
