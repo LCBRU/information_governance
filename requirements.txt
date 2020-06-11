@@ -5,3 +5,4 @@ Flask-Login
 sqlalchemy-migrate
 python-dotenv
 python-ldap
+Flask-Admin

@@ -8,6 +8,7 @@ from .template_filters import init_template_filters
 from .standard_views import init_standard_views
 from .utils import ReverseProxied
 from .config import BaseConfig
+from .admin import init_admin
 
 
 def create_app(config=BaseConfig):
@@ -21,6 +22,7 @@ def create_app(config=BaseConfig):
         db.init_app(app)
         init_template_filters(app)
         init_standard_views(app)
+        init_admin(app)
 
     app.register_blueprint(ui_blueprint)
     app.register_blueprint(security_blueprint)
