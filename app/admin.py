@@ -32,11 +32,11 @@ class CustomView(ModelView):
 
 
 class StatementView(CustomView):
-    form_columns = ["name", "statement"]
+    column_list = form_columns = ["name", "statement"]
 
 
 class ApplicationView(CustomView):
-    form_columns = ["name", "application_type", "hosting", "visibility", "authentication"]
+    column_list = form_columns = ["name", "application_type", "hosting", "visibility", "authentication"]
 
     form_args = {
         'application_type': {
