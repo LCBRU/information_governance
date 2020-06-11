@@ -1,5 +1,4 @@
-#!/usr/bin/env python3
-
+import time
 import logging
 from urllib.parse import urlparse, urljoin
 from flask import (
@@ -12,14 +11,25 @@ from flask import (
     request,
     current_app,
 )
-from flask_login import logout_user
+from flask_login import (
+    LoginManager,
+    login_user,
+    logout_user,
+    current_user,
+)
 from .forms import LoginForm
 from ..database import db
-from ..model import User
-from ..security import login as login_user
+from .model import User, validate_password
 
 
 blueprint = Blueprint("security_ui", __name__, template_folder="templates")
+login_manager = LoginManager()
+
+
+@login_manager.user_loader
+def load_user(username):
+    return User.query.filter_by(username=username).one_or_none()
+
 
 @blueprint.record
 def record(state):
@@ -27,6 +37,42 @@ def record(state):
         raise Exception(
             "This blueprint expects you to provide database access through database"
         )
+    
+    login_manager.init_app(state.app)
+    login_manager.login_view = "security_ui.login"
+
+    @state.app.before_first_request
+    def init_data():
+        _init_users()
+
+
+def _init_users():
+    if User.query.filter_by(username=current_app.config['ADMIN_USER_USERNAME']).count() == 0:
+        admin = User(
+            username=current_app.config['ADMIN_USER_USERNAME'],
+            first_name=current_app.config['ADMIN_USER_FIRST_NAME'],
+            last_name=current_app.config['ADMIN_USER_LAST_NAME'],
+        )
+        db.session.add(admin)
+
+    db.session.commit()
+
+
+def _login(username, password):
+    current_app.logger.info('Username supplied for login: %s', username)
+
+    user = User.query.filter_by(username=username).first()
+
+    current_app.logger.info('User attempting log in: %s', user)
+
+    if user:
+        if user.is_active:
+            if validate_password(user, password):
+                login_user(user)
+                current_app.logger.info('User logged in: %s', user.username)
+                return user
+    
+    time.sleep(2)
 
 
 def is_safe_url(target):
@@ -45,11 +91,11 @@ def login():
     form = LoginForm()
 
     if form.validate_on_submit():
-        user = login_user(form.username.data, form.password.data)
+        user = _login(form.username.data, form.password.data)
 
         current_app.logger.info('Logged in user: %s', user)
 
-        return redirect(next_url or url_for('ui.labels'))
+        return redirect(next_url or url_for('ui.index'))
 
     return render_template('login.html', form=form, next_url=next_url)
 
@@ -57,4 +103,4 @@ def login():
 @blueprint.route("/logout")
 def logout():
     logout_user()
-    return redirect(url_for('ui.labels'))
+    return redirect(url_for('ui.index'))
