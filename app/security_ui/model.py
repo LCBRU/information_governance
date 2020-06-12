@@ -67,7 +67,7 @@ def validate_password(user, password):
         return True
 
     except ldap.LDAPError as e:
-        current_app.logger.info('LDAP Error')
+        log_exception(e)
         return False
 
 
