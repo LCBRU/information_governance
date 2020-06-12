@@ -51,7 +51,7 @@ def init_template_filters(app):
 
     @app.template_filter("separated_number")
     def currency(value):
-        return F"{value:,}"
+        return "{:,}".format(value)
 
     @app.template_filter("title_case")
     def currency(value):
