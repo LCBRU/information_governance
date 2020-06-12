@@ -1,76 +1,59 @@
 {% extends "_subbase.html" %}
+{% import "_errors.html" as errors %}
 
 {% set home_class = 'active' %}
 
-
 {% block base_content %}
 
-<div id="wrapper-outer">
-  <div id="wrapper-inner">
+<div id="main-wrapper">
 
-    <header class="pageheader">
-      <div class="container">
-        <h1>{{ config.SITE_NAME }}</h1>
-      </div>
-    </header>
-
+  <header class="pageheader">
     <div class="container">
-      <nav class="navbar navbar-expand-sm navbar-light bg-light">
-        <ul class="navbar-nav">
+      <h1>{{ config.SITE_NAME }}</h1>
+    </div>
+  </header>
 
+  <div class="container">
+    <nav class="navbar navbar-expand-sm">
+      {% if current_user.is_active %}
+        <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <a class="nav-link {{home_class}}" href="{{ url_for('ui.index') }}">Home</a>
+            <a class="navbar-brand fas fa-home" href="{{ url_for('ui.index') }}"></a>
           </li>
-
         </ul>
-      </nav>
-    </div>
-
-    <div class="container">
-      {% with messages = get_flashed_messages(with_categories=true) %}
-          {% for category, message in messages %}
   
-            {% set class="alert-info" %}
-            {% set fas_class="fa-comment" %}
-  
-            {% if category == "warning" %}
-              {% set class="alert-warning" %}
-              {% set fas_class="fa-exclamation" %}
-            {% elif category == "error" %}
-              {% set class="alert-danger" %}
-              {% set fas_class="fa-exclamation" %}
-            {% elif category == "success" %}
-              {% set class="alert-success" %}
-              {% set fas_class="fa-check" %}
-            {% endif %}
-  
-  
-              <div class="justify-content-center">
-                <div class="alert {{class}}" role="alert">
-                    <i class="fas {{fas_class}}"></i>
-                    <span class="sr-only">{{category}}:</span>
-                    {{message}}
-                </div>
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin</a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="/admin/">Maintenance</a>
+              </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ current_user.full_name }}</a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="{{ url_for('security_ui.logout') }}">Log Out</a>
             </div>
-
-          {% endfor %}
-        {% endwith %}
-  
-        {% block errors %}{% endblock %}
-    </div>
-          
-    <div id="content" class="container">
-      {% block content %}{% endblock %}
-    </div>
-
+          </li>
+        </ul>    
+      {% endif %}
+    </nav>
   </div>
-</div>
 
-<div class="container">
+  <div class="container">
+      {{ errors.render() }}
+      {% block errors %}{% endblock %}
+  </div>
+        
+  <div id="content" class="container">
+    {% block content %}{% endblock %}
+  </div>
+
   <footer>
-    <p>
-      Copyright &copy; {{ current_year }} Richard Bramley
-    </p>
+    <div class="container">
+        Copyright &copy; {{ current_year }} NIHR Leicester Biomedical Research Centre
+    </div>
   </footer>
+
 </div>
 {% endblock %}

@@ -1,0 +1,5 @@
+{% extends admin_base_template %}
+
+{% block brand %}
+<a class="brand" href="{{ url_for('ui.index')}}">{{ admin_view.admin.name }}</a>
+{% endblock %}

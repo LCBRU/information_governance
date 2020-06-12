@@ -6,15 +6,14 @@
 
 <div class="row h-100 justify-content-center">
   <div class="login-form">  
+    {{ errors.render() }}
     <div class="card">
       <div class="card-header">
           <div>{{ config.SITE_NAME }}: {% block formname %}{% endblock %}</div>
       </div>
 
       <div class="card-body">
-        {{ errors.render() }}
-
-        {% block content %}{% endblock %}
+          {% block content %}{% endblock %}
       </div>
     </div>
   </div>
