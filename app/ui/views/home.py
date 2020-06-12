@@ -7,8 +7,6 @@ from app.model import Application
 def index():
     applications = Application.query.order_by(Application.name).all()
 
-    current_app.logger.info('Application_root: %s', current_app.wsgi_app.script_name)
-
     return render_template("index.html", applications=applications)
 
 
