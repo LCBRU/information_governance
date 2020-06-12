@@ -88,13 +88,15 @@ class User(db.Model, UserMixin):
 
     @property
     def full_name(self):
-        user = search_ldap(self)
-        return "{} {}".format(user['given_name'], user['surname']).strip()
+        return self.username
+        # user = search_ldap(self)
+        # return "{} {}".format(user['given_name'], user['surname']).strip()
 
     @property
     def email(self):
-        user = search_ldap(self)
-        return user['email']
+        return self.username
+        # user = search_ldap(self)
+        # return user['email']
 
     def __str__(self):
         return self.email or self.username
