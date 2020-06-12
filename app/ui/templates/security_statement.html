@@ -1,0 +1,13 @@
+{% extends "_base.html" %}
+
+{% block content %}
+<section>
+    <h2>{{ application.name}} Security Statement</h2>
+
+    <p class="statement">{{ application.application_type.statement }}</p>
+    <p class="statement">{{ application.hosting.statement }}</p>
+    <p class="statement">{{ application.authentication.statement }}</p>
+    <p class="statement">{{ application.visibility.statement }}</p>
+
+</section>
+{% endblock %}

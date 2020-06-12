@@ -254,10 +254,9 @@ dd {
   margin: 0;
 }
 
-.list-group-item .badge {
+.list-group-item .float-right {
   margin-left: 10px;
   margin-bottom: 10px;
-  font-size: 80%;
 }
 
 .errors {
@@ -275,8 +274,6 @@ a.fas, a.fas:link, a.fas:hover {
   padding: 10px;
   background-color: #f1f1f1;
 }
-
-
 
 /** SECURITY UI **/
 
@@ -336,4 +333,12 @@ a.fas, a.fas:link, a.fas:hover {
   to {
     -webkit-transform: rotate(360deg);
   }
+}
+
+/** Application specific **/
+
+p.statement {
+  margin-left: 30px;
+  margin-right: 30px;
+  font-style: italic;
 }

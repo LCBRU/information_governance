@@ -2,7 +2,24 @@
 
 {% block content %}
 <section>
-    <h1>Hello, World</h1>
+    <h2>Applications</h2>
+
+    <div class="row">
+        <div class="col">
+            <ul class="list-group">
+                {% for a in applications %}
+                    <li class="list-group-item">
+                        <header class="float-left">
+                            <h1>{{ a.name }}</h1>
+                        </header>
+
+                        <a class="float-right btn btn-secondary" href="{{ url_for('ui.security_statement', id=a.id) }}">Security Statement</a>
+                        <a class="float-right btn btn-secondary" href="{{ url_for('ui.index') }}">DPIA</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
 </section>
 {% endblock %}
-
