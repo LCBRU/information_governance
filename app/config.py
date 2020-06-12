@@ -7,7 +7,7 @@ load_dotenv()
 
 class BaseConfig(object):
     SITE_NAME = 'Information Governance'
-    FLASK_DEBUG = os.environ["FLASK_DEBUG"]
+    FLASK_DEBUG = os.environ["FLASK_DEBUG"] == 'True'
 
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
     SQLALCHEMY_ECHO = os.getenv("SQLALCHEMY_ECHO", "False") == 'True'
