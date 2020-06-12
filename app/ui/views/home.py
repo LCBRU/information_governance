@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for
+from flask import render_template, redirect, url_for, current_app
 from .. import blueprint
 from app.model import Application
 
@@ -6,6 +6,8 @@ from app.model import Application
 @blueprint.route("/")
 def index():
     applications = Application.query.order_by(Application.name).all()
+
+    current_app.logger.info('Application_root: %s', current_app.wsgi_app.script_name)
 
     return render_template("index.html", applications=applications)
 
