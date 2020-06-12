@@ -84,7 +84,7 @@ def validate_password_uhl(user, password):
 
     try:
         current_app.logger.info('LDAP Binding')
-        l.simple_bind_s(user.email, password)
+        l.simple_bind_s(user.username, password)
         return True
 
     except ldap.LDAPError as e:
