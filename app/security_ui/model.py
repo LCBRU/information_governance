@@ -63,7 +63,8 @@ def validate_password(user, password):
 
     try:
         current_app.logger.info('LDAP Binding')
-        l.simple_bind_s(user.email, password)
+        dn = 'uid={0},{1}'.format(user.username, current_app.config['LDAP_BASEDN'])
+        l.simple_bind_s(dn, password)
         return True
 
     except ldap.LDAPError as e:
