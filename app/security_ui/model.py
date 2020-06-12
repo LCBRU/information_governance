@@ -54,16 +54,19 @@ def validate_password(user, password):
     if current_app.config['FLASK_DEBUG']:
         return True
 
+    current_app.logger.info('Contacting LDAP Server: %s', current_app.config['LDAP_URI'])
+    
     l = ldap.initialize(current_app.config['LDAP_URI'])
     l.protocol_version = 3
     l.set_option(ldap.OPT_REFERRALS, 0)
 
     try:
+        current_app.logger.info('LDAP Binding')
         l.simple_bind_s(user.email, password)
         return True
 
     except ldap.LDAPError as e:
-        print(e)
+        current_app.logger.info('LDAP Error')
         return False
 
 
