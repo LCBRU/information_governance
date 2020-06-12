@@ -57,7 +57,7 @@ def validate_password(user, password):
 
     current_app.logger.info('Contacting LDAP Server: %s', current_app.config['LDAP_URI'])
     
-    l = ldap.open(current_app.config['LDAP_URI'])
+    l = ldap.initialize(current_app.config['LDAP_URI'])
     l.protocol_version = 3
     l.set_option(ldap.OPT_REFERRALS, 0)
 
