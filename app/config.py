@@ -16,6 +16,7 @@ class BaseConfig(object):
     SECRET_KEY = os.environ["SECRET_KEY"]
 
     SQLALCHEMY_DATABASE_URI = os.environ["DB_URI"]
+    LDAP_URI = os.environ["LDAP_URI"]
 
     ADMIN_USER_USERNAME = os.environ["ADMIN_USER_USERNAME"]
     ADMIN_USER_FIRST_NAME = os.environ["ADMIN_USER_FIRST_NAME"]
