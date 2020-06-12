@@ -6,4 +6,4 @@ sqlalchemy-migrate
 python-dotenv
 python-ldap
 Flask-Admin
-mysqlclient
+mysqlclient=1.4.4
