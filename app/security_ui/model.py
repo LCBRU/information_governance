@@ -52,6 +52,7 @@ def search_ldap(user):
 
 def validate_password(user, password):
     if current_app.config['FLASK_DEBUG']:
+        current_app.logger.info('In debug skipping LDAP lookup')
         return True
 
     current_app.logger.info('Contacting LDAP Server: %s', current_app.config['LDAP_URI'])
