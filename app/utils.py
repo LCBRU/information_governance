@@ -46,7 +46,7 @@ def log_exception(e):
 
 
 def get_concrete_classes(cls):
-    current_app.logger.info(f'get_concrete_label_packs')
+    current_app.logger.info('get_concrete_label_packs')
 
     result = [sub() for sub in cls.__subclasses__()
               if len(sub.__subclasses__()) == 0 and
