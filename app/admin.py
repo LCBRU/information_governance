@@ -1,6 +1,6 @@
 import datetime
 import flask_admin as admin
-from flask import current_app
+from flask import current_app, redirect, url_for, request
 from flask_admin.form import SecureForm
 from flask_admin.contrib.sqla import ModelView, fields
 from flask_login import current_user
@@ -25,6 +25,9 @@ class CustomView(ModelView):
 
     def is_accessible(self):
         return current_user.is_authenticated
+
+    def inaccessible_callback(self, name, **kwargs):
+        return redirect(url_for('security_ui.login', next=request.url))
 
     def on_model_change(self, form, model, is_created):
         model.last_updated_datetime = datetime.datetime.utcnow()

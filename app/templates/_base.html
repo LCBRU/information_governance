@@ -21,23 +21,24 @@
         </li>
       </ul>
 
-      {% if current_user.is_active %}
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin</a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="/admin/">Maintenance</a>
-              </div>
-          </li>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin</a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{{ url_for('security_ui.login', next=url_for('admin.index'))}}">Maintenance</a>
+          </div>
+        </li>
+
+        {% if current_user.is_active %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ current_user.full_name }}</a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" href="{{ url_for('security_ui.logout') }}">Log Out</a>
             </div>
           </li>
-        </ul>    
-      {% endif %}
-    </nav>
+        {% endif %}
+      </ul>    
+  </nav>
   </div>
 
   <div class="container">

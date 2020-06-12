@@ -88,6 +88,9 @@ def login():
     if not is_safe_url(next_url):
         return abort(400)
 
+    if current_user.is_authenticated:
+        return redirect(next_url or url_for('ui.index'))
+
     form = LoginForm()
 
     if form.validate_on_submit():
