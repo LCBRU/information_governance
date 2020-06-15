@@ -50,6 +50,7 @@ class VisibilityStatement(Statement):
 class Application(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), unique=True)
+    description = db.Column(db.UnicodeText)
     application_type_id = db.Column(db.Integer, db.ForeignKey(ApplicationTypeStatement.id))
     application_type = db.relationship(ApplicationTypeStatement, foreign_keys=[application_type_id])
     hosting_id = db.Column(db.Integer, db.ForeignKey(HostingStatement.id))

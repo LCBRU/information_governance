@@ -39,7 +39,7 @@ class StatementView(CustomView):
 
 
 class ApplicationView(CustomView):
-    column_list = form_columns = ["name", "application_type", "hosting", "visibility", "authentication"]
+    column_list = form_columns = ["name", "description", "application_type", "hosting", "visibility", "authentication"]
 
     form_args = {
         'application_type': {
