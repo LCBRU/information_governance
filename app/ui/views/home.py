@@ -15,3 +15,15 @@ def security_statement(id):
     application = Application.query.get_or_404(id)
 
     return render_template("security_statement.html", application=application)
+
+
+@blueprint.route("/security_statement/text/<int:id>")
+def security_statement_text(id):
+    application = Application.query.get_or_404(id)
+
+    return '\n\n'.join([
+        application.application_type.statement,
+        application.hosting.statement,
+        application.authentication.statement,
+        application.visibility.statement,
+    ])
