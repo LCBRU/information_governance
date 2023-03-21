@@ -4,7 +4,6 @@ from wtforms import (
     IntegerField,
     StringField,
     RadioField,
-    TextField,
     PasswordField,
     TextAreaField,
     HiddenField,
