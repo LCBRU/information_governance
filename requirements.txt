@@ -58,7 +58,7 @@ sqlalchemy==2.0.7
     #   sqlalchemy-migrate
 sqlalchemy-migrate==0.13.0
     # via -r requirements.in
-sqlparse==0.4.3
+sqlparse==0.4.4
     # via sqlalchemy-migrate
 tempita==0.5.2
     # via sqlalchemy-migrate
